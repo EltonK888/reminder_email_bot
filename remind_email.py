@@ -1,20 +1,26 @@
 from __future__ import print_function
-import pickle
-import os.path
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-import credentials
 import base64
-from email.mime.text import MIMEText
+
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 import mimetypes
+import os.path
+import pickle
+
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+
+import recipients_emails
+
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://mail.google.com/']
-FROM_EMAIL = credentials.USERNAME
-TO_EMAILS = [FROM_EMAIL] # list of emails to send message to
+TO_EMAILS = recipients_emails.RECIPIENTS  # list of emails to send message to
+FROM_EMAIL = recipients_emails.FROM_EMAIL
+PAYEE = recipients_emails.PAYEE  # the payee's email
 
 
 def create_credentials():
@@ -54,7 +60,7 @@ def create_message(sender, to, subject, message_text):
     Returns:
         An object containing a base64url encoded email object.
     """
-    message = MIMEText(message_text, 'html') # text type html for message formatting
+    message = MIMEText(message_text, 'html')  # text type html for message formatting
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
@@ -75,7 +81,7 @@ def send_message(service, user_id, message):
     """
     try:
         message = (service.users().messages().send(userId=user_id, body=message)
-                .execute())
+                   .execute())
         print('Message Id: %s' % message['id'])
         return message
     except:
@@ -87,9 +93,9 @@ def main():
     Sends an email to all emails in TO_EMAILS
     """
     try:
-        creds = create_credentials() # creates a token with credentials for the bot
+        creds = create_credentials()  # creates a token with credentials for the bot
 
-        service = build('gmail', 'v1', credentials=creds) # creates the service to interact with the Gmail API
+        service = build('gmail', 'v1', credentials=creds)  # creates the service to interact with the Gmail API
 
         recipients = ", ".join(TO_EMAILS)
         subject = "Gym Family Plan"
@@ -100,7 +106,7 @@ def main():
         It is that time of the month again where we must fork over <b>$31.00</b> to Felix Kenji Yan for our Iron Fitness Family Plan membership.
         <br>
         <br>
-        <b>Please e-transfer $31.00 to the provided email address: felixyan_13@hotmail.com</b>
+        <b>Please e-transfer $31.00 to the provided email address: {}</b>
         <br>
         <br>
         If you would like to cancel your membership, please let everyone know in the group chat and Felix will take care of the administration issues.
@@ -115,7 +121,7 @@ def main():
         Beep Boop I am a bot created by Elton Kok. If there is an issue please let him know.
         <br>
         View my source code on github at https://github.com/EltonK888/reminder_email_bot
-        """
+        """.format(PAYEE)
         msg = create_message(FROM_EMAIL, recipients, subject, body)
         send_message(service, "me", msg)
         print("email sent successfully")
