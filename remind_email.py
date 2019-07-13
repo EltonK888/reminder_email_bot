@@ -1,5 +1,6 @@
 from __future__ import print_function
 import base64
+import datetime
 
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -19,8 +20,9 @@ import recipients_emails
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://mail.google.com/']
 TO_EMAILS = recipients_emails.RECIPIENTS  # list of emails to send message to
-FROM_EMAIL = recipients_emails.FROM_EMAIL
+FROM_EMAIL = recipients_emails.FROM_EMAIL # the email address sending the message
 PAYEE = recipients_emails.PAYEE  # the payee's email
+DATE = datetime.datetime.now().strftime("%d-%b-%Y %H:%M:%S") # get current time that the script will run
 
 
 def create_credentials():
@@ -92,6 +94,7 @@ def main():
     """
     Sends an email to all emails in TO_EMAILS
     """
+    print("-------This script was run on %s--------" % DATE)
     try:
         creds = create_credentials()  # creates a token with credentials for the bot
 
@@ -127,6 +130,7 @@ def main():
         print("email sent successfully")
     except:
         print("error, something went wrong.")
+    print("--------------------------------------------------------------")
 
 
 if __name__ == '__main__':
