@@ -1,0 +1,16 @@
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+
+# for testing the gym reminder bot (will send email every minute)
+# * * * * * cd /home/your_user_name/Documents/reminder_email_bot && python3 remind_email.py >> remind_email_log.txt
+
+# run the gym reminder bot on the 25th of every month at 8:00am
+0 8 20 * * cd /home/your_user_name/Documents/reminder_email_bot && python3 remind_email.py >> remind_email_log.txt
+
