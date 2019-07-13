@@ -5,3 +5,4 @@ recipients_emails.py
 token.pickle
 client_secret.json
 __pycache__
+remind_email_log.txt
