@@ -36,7 +36,11 @@ python3 remind_email.py >> remind_email_log.txt
 When the email is sent, this is what should show up in the inbox
 
 HTML Version
-![HTML Email](https://github.com/EltonK888/reminder_email_bot/blob/master/static/screenshots/email_image.PNG?raw=true)
 
-If HTML doesn't work on the email client, the plain text version should show
-![Plain Text Email](https://github.com/EltonK888/reminder_email_bot/blob/master/static/screenshots/email_image_plain.PNG?raw=true)
+![HTML Email](https://github.com/EltonK888/reminder_email_bot/blob/master/screenshots/email_image.PNG?raw=true) 
+
+
+If HTML doesn't work on the email client, the plain text version should show 
+
+
+![Plain Text Email](https://github.com/EltonK888/reminder_email_bot/blob/master/screenshots/email_image_plain.PNG?raw=true)
