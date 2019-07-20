@@ -21,11 +21,11 @@ import recipients_emails
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://mail.google.com/']
 TO_EMAILS = recipients_emails.RECIPIENTS  # list of emails to send message to
-FROM_EMAIL = recipients_emails.FROM_EMAIL # the email address sending the message
-PAYEE = recipients_emails.PAYEE  # the payee's email
-DATE = datetime.datetime.now().strftime("%d-%b-%Y %H:%M:%S") # get current time that the script will run
-HTML_MESSAGE = email_messages.html_message # HTML formatted version of the email message
-PLAIN_MESSAGE = email_messages.plain_message # plain text version of email message
+FROM_EMAIL = recipients_emails.FROM_EMAIL # a string of the email address sending the message
+PAYEE = recipients_emails.PAYEE  # a string of the payee's email
+DATE = datetime.datetime.now().strftime("%d-%b-%Y %H:%M:%S") # a string of the current time that the script will run
+HTML_MESSAGE = email_messages.html_message # a string of the HTML formatted version of the email message
+PLAIN_MESSAGE = email_messages.plain_message # a string of the plain text version of email message
 
 
 def create_credentials():

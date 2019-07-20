@@ -11,6 +11,6 @@
 # for testing the gym reminder bot (will send email every minute)
 # * * * * * cd /home/your_user_name/Documents/reminder_email_bot && python3 remind_email.py >> remind_email_log.txt
 
-# run the gym reminder bot on the 25th of every month at 8:00am
-0 8 20 * * cd /home/your_user_name/Documents/reminder_email_bot && python3 remind_email.py >> remind_email_log.txt
+# run the gym reminder bot on the 15th of every month at 8:00am
+0 8 15 * * cd /home/your_user_name/Documents/reminder_email_bot && python3 remind_email.py >> remind_email_log.txt
 
