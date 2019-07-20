@@ -1,6 +1,7 @@
 from __future__ import print_function
 import base64
 import datetime
+import email_messages
 
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -23,6 +24,8 @@ TO_EMAILS = recipients_emails.RECIPIENTS  # list of emails to send message to
 FROM_EMAIL = recipients_emails.FROM_EMAIL # the email address sending the message
 PAYEE = recipients_emails.PAYEE  # the payee's email
 DATE = datetime.datetime.now().strftime("%d-%b-%Y %H:%M:%S") # get current time that the script will run
+HTML_MESSAGE = email_messages.html_message # HTML formatted version of the email message
+PLAIN_MESSAGE = email_messages.plain_message # plain text version of email message
 
 
 def create_credentials():
@@ -50,8 +53,8 @@ def create_credentials():
     return creds
 
 
-def create_message(sender, to, subject, message_text):
-    """Create a message for an email.
+def create_message(sender, to, subject, message_text_html, message_text_plain):
+    """Create a message in HTML and plain text for an email.
 
     Args:
         sender: Email address of the sender.
@@ -62,10 +65,14 @@ def create_message(sender, to, subject, message_text):
     Returns:
         An object containing a base64url encoded email object.
     """
-    message = MIMEText(message_text, 'html')  # text type html for message formatting
+    message = MIMEMultipart('alternative')
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
+    message_html = MIMEText(message_text_html, 'html') # HTML version
+    message_plain = MIMEText(message_text_plain) # plain text version
+    message.attach(message_plain)
+    message.attach(message_html)
     return {'raw': base64.urlsafe_b64encode(message.as_string().encode()).decode()}
 
 
@@ -102,30 +109,9 @@ def main():
 
         recipients = ", ".join(TO_EMAILS)
         subject = "Gym Family Plan"
-        body = """
-        Hi everyone!
-        <br>
-        <br>
-        It is that time of the month again where we must fork over <b>$31.00</b> to Felix Kenji Yan for our Iron Fitness Family Plan membership.
-        <br>
-        <br>
-        <b>Please e-transfer $31.00 to the provided email address: {}</b>
-        <br>
-        <br>
-        If you would like to cancel your membership, please let everyone know in the group chat and Felix will take care of the administration issues.
-        <br>
-        <br>
-        From,
-        <br>
-        <br>
-        Reminder Bot
-        <br>
-        <br>
-        Beep Boop I am a bot created by Elton Kok. If there is an issue please let him know.
-        <br>
-        View my source code on github at https://github.com/EltonK888/reminder_email_bot
-        """.format(PAYEE)
-        msg = create_message(FROM_EMAIL, recipients, subject, body)
+        body_html = HTML_MESSAGE.format(PAYEE)
+        body_plain_txt = PLAIN_MESSAGE.format(PAYEE)
+        msg = create_message(FROM_EMAIL, recipients, subject, body_html, body_plain_txt)
         send_message(service, "me", msg)
         print("email sent successfully")
     except:
